@@ -5,6 +5,11 @@ import login from "@/page/login/login";
 import mainPage from "@/page/mainPage/mainPage";
 import managerPage from "@/page/managerPage/managerPage";
 import docManager from "@/page/managerPage/docManager";
+//data center部分
+import dataCenter from "@/page/dataCenter/dataCenter";
+import department from "@/page/dataCenter/department";
+import outPatient from "@/page/dataCenter/outPatient";
+import staff from "@/page/dataCenter/staff";
 
 import test from "@/page/test"
 import outpatient from "@/page/Outpatient/outpatient";
@@ -54,6 +59,39 @@ export default new Router({
 						component: drugManagement,
 						meta: {
 							title: '药品管理'
+						}
+					}]
+				},
+				//数据中心
+				{
+					path: '/dataCenter',
+					name: 'dataCenter',
+					component: dataCenter,
+					meta: {
+						title: '数据中心'
+					},
+					children:[{
+							path: '/department',
+							name: 'department',
+							component: department,
+							meta: {
+								title: '部门列表'
+							}
+						},
+						{
+							path: '/staff',
+							name: 'staff',
+							component: staff,
+							meta: {
+								title: '员工列表'
+							}
+						},
+						{
+						path: '/outPatient',
+						name: 'outPatient',
+						component: outPatient,
+						meta: {
+							title: '门诊患者库'
 						}
 					}]
 				},
