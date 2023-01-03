@@ -1,5 +1,5 @@
 <template>
-	<div>数据中心</div>
+  <router-view></router-view>
 </template>
 
 <script>
