@@ -53,7 +53,7 @@
           </el-submenu>
           <el-submenu index="5">
             <template slot="title"><i class="el-icon-view"></i>数据中心</template>
-            <el-menu-item index="department" >1科室中心</el-menu-item>
+            <el-menu-item index="department" >1科室列表</el-menu-item>
             <el-menu-item index="staff">2员工列表</el-menu-item>
             <el-menu-item index="outPatient">3门诊患者库</el-menu-item>
             <el-menu-item index="communication">4项目大类</el-menu-item>
