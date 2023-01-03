@@ -8,7 +8,13 @@ export function getAllDrug(data){
         data
     })
 }
-
+export function insertDrug(data){
+    return request({
+        url: '/drug',//请求接口
+        method: 'post',//请求方式
+        data
+    })
+}
 export function getDrugByID(data){
     return request({
         url: '/drug/id',//请求接口
@@ -16,8 +22,20 @@ export function getDrugByID(data){
         data
     })
 }
-
-
+export function deleteDrug(data){
+    return request({
+        url: '/drug/id',//请求接口
+        method: 'delete',//请求方式
+        data
+    })
+}
+export function updateDrug(data){
+    return request({
+        url: '/drug',//请求接口
+        method: 'put',//请求方式
+        data
+    })
+}
 // 1.登录
 // 2.搭建系统整体框架
 // 3.配置路由以及页面跳转
