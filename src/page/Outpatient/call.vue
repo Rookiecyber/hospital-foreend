@@ -24,6 +24,14 @@
               prop="address"
               label="地址">
           </el-table-column>
+          <el-table-column
+              fixed="right"
+              label="操作"
+              width="100">
+            <template slot-scope="scope">
+              <el-button @click="handleClick(scope.row)" type="text" size="small">挂起</el-button>
+            </template>
+          </el-table-column>
         </el-table>
       </div></el-col>
       <el-col :span="12"><div class="grid-content bg-purple-light">
@@ -41,8 +49,12 @@
               width="180">
           </el-table-column>
           <el-table-column
-              prop="address"
-              label="地址">
+              fixed="right"
+              label="操作"
+              width="100">
+            <template slot-scope="scope">
+              <el-button @click="handleClick(scope.row)" type="text" size="small">解挂</el-button>
+            </template>
           </el-table-column>
         </el-table>
       </div></el-col>
