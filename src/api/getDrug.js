@@ -15,10 +15,10 @@ export function insertDrug(data){
         data
     })
 }
-export function getDrugByID(data){
+export function getDrugByName(data){
     return request({
-        url: '/drug/id',//请求接口
-        method: 'get',//请求方式
+        url: '/drug/name',//请求接口
+        method: 'post',//请求方式
         data
     })
 }

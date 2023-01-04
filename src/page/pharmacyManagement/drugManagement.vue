@@ -2,7 +2,7 @@
   <div>
     <el-input
         style="width: 190px;margin-right: 40px;margin-top: 20px;margin-bottom: 20px;"
-        v-model="listQuery.keyword"
+        v-model="listQuery"
         size="small"
         placeholder="请输入药品名称"
         clearable
@@ -160,7 +160,7 @@
 </template>
 
 <script>
-import { getAllDrug,deleteDrug,getDrugByID,insertDrug,updateDrug } from '@/api/getDrug.js';
+import { getAllDrug,deleteDrug,getDrugByName,insertDrug,updateDrug } from '@/api/getDrug.js';
 import { setStorage, getStorage} from "@/utils/localStorage.js";
 import {
   deepClone
@@ -194,8 +194,8 @@ export default {
       this.listLoading = true;
       getAllDrug({}).then((res) => {
         if (res != -1) {
-          console.log("这是res\n");
-          console.log(res);
+          // console.log("这是res\n");
+          // console.log(res);
           res.data.forEach((item, index) => {
             item.index = index + 1;
             //console.log(item)
@@ -286,19 +286,23 @@ export default {
       }
     },
     search() {
-      let company = {
-        companyName: this.inputData
+      // console.log("开始搜索");
+      let drug = {
+        name: this.listQuery
       }
       this.listLoading = true;
-      queryByName(company).then((res) => {
+      // console.log("drug为："+drug);
+      // console.log(drug.name)
+      getDrugByName(drug).then((res) => {
         if (res != -1) {
           // console.log(company);
-          res.datas.forEach((item, index) => {
+          res.data.forEach((item, index) => {
             item.index = index + 1;
             //console.log(item)
           })
-          this.companyList = res.datas;
-          this.total=this.companyList.length;
+          this.drugList = res.data;
+          // console.log("搜索结果"+this.drugList);
+          this.total=this.drugList.length;
           this.cur_page=1;
           this.listLoading = false;
         }
