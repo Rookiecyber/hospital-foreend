@@ -151,16 +151,16 @@ export default {
       console.log(this.registerRecord);
       addRecord({
         // id: '',
-        create_time: new Date().getTime()+'',
+        createTime: new Date().getTime()+'',
         fee: this.registerRecord.fee,
-        is_paid: 0,
-        is_hang_up: 0,
-        is_canceled: 0,
-        is_completed: 0,
-        is_refunded: 0,
+        isPaid: 0,
+        isHangUp: 0,
+        isCanceled: 0,
+        isCompleted: 0,
+        isRefunded: 0,
         patientId: this.registerRecord.id,
         doctorId: this.registerRecord.doctor,
-        department_id: this.registerRecord.dep,
+        departmentId: this.registerRecord.dep,
       }).then((res)=>{
         if(res!=-1){
           console.log("挂号成功");
