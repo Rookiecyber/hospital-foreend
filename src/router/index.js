@@ -14,7 +14,7 @@ import staff from "@/page/dataCenter/staff";
 import test from "@/page/test"
 import outpatient from "@/page/Outpatient/outpatient";
 import userRegister from "@/page/Outpatient/userRegister";
-import prescriptionPrice from "@/page/Outpatient/prescriptionPrice";
+import prescriptionPrice from "@/page/Outpatient/CheckApplyFor";
 import projectPricing from "@/page/Outpatient/projectPricing";
 import projectPayment from "@/page/Outpatient/projectPayment";
 import projectCheck from "@/page/Outpatient/projectCheck";
@@ -23,6 +23,7 @@ import medicalRecord from "@/page/Outpatient/medicalRecord";
 import drugManagement from "@/page/pharmacyManagement/drugManagement";
 import pharmacyManagement from "@/page/pharmacyManagement/pharmacyManagement";
 import call from "@/page/Outpatient/call";
+import CheckApplyFor from "@/page/Outpatient/CheckApplyFor";
 Vue.use(Router);
 
 export default new Router({
@@ -122,11 +123,11 @@ export default new Router({
 						}
 						,
 						{
-							path: '/prescriptionPrice',
-							name: 'prescriptionPrice',
-							component: prescriptionPrice,
+							path: '/CheckApplyFor',
+							name: 'CheckApplyFor',
+							component: CheckApplyFor,
 							meta: {
-								title: '处方划价'
+								title: '检验申请'
 							}
 						},
 						{
