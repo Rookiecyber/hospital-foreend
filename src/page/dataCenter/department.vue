@@ -42,13 +42,14 @@
         element-loading-text="正在疯狂加载"
         border
         fit
-        height="500px"
+        style="height: 100%;font-size: 20px;width: 100%"
+        :row-style="{height:'75px'}"
+        :cell-style="{padding:'0px'}"
         class="table-container"
         highlight-current-row
     >
       <el-table-column
           label="序号"
-          width="100"
           align="center"
       >
         <template slot-scope="scope">
@@ -57,7 +58,6 @@
       </el-table-column>
       <el-table-column
           label="科室名称"
-          width="200"
           align="center"
       >
         <template slot-scope="scope">
@@ -66,7 +66,6 @@
       </el-table-column>
       <el-table-column
           label="地点"
-          width="180	"
           align="center"
       >
         <template slot-scope="scope">
@@ -75,7 +74,6 @@
       </el-table-column>
       <el-table-column
           label="电话"
-          width="170"
           align="center"
       >
         <template slot-scope="scope">
@@ -84,7 +82,6 @@
       </el-table-column>
       <el-table-column
           label="操作"
-          width="200"
           align="center"
       >
         <template slot-scope="scope">
@@ -110,7 +107,7 @@
       </el-table-column>
     </el-table>
     <!-- 分页组件ui -->
-    <div style="margin-top:20px" class="pagination">
+    <div style="width: 100%;height: 100%" class="pagination">
       <el-pagination background @current-change="handleCurrentChange" @size-change="handleSizeChange"
                      :current-page="cur_page" :page-sizes="[10,15,20,50]" :page-size="pageSize"
                      layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
@@ -305,7 +302,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .w-200{
   width: 200px;
 }
@@ -314,4 +311,6 @@ export default {
   vertical-align: middle;
   margin-bottom: 10px;
 }
+
+
 </style>
