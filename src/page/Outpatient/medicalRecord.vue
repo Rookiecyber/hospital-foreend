@@ -38,7 +38,7 @@
 
     <el-table
         v-loading="listLoading"
-        :data="patientList.slice((cur_page-1)*pageSize,cur_page*pageSize)"
+        :data="medicalRecordList.slice((cur_page-1)*pageSize,cur_page*pageSize)"
         element-loading-text="正在疯狂加载"
         border
         fit
@@ -57,56 +57,38 @@
         </template>
       </el-table-column>
       <el-table-column
-          label="账号"
+          label="创建时间"
           align="center"
       >
         <template slot-scope="scope">
-          {{ scope.row.nickname }}
+          {{ scope.row.createTime }}
         </template>
       </el-table-column>
       <el-table-column
-          label="姓名"
+          label="药物过敏史"
           align="center"
       >
         <template slot-scope="scope">
-          {{ scope.row.name }}
+          {{ scope.row.drugSensitivityHistory }}
         </template>
       </el-table-column>
       <el-table-column
-          label="性别"
+          label="病史"
           align="center"
       >
         <template slot-scope="scope">
-          {{ scope.row.sex }}
+          {{ scope.row.presentIllnessHistory }}
         </template>
       </el-table-column>
 
       <el-table-column
-          label="年龄"
+          label="主诉"
           align="center"
       >
         <template slot-scope="scope">
-          {{ scope.row.age }}
+          {{ scope.row.chiefComplaint }}
         </template>
       </el-table-column>
-
-      <el-table-column
-          label="电话"
-          align="center"
-      >
-        <template slot-scope="scope">
-          {{ scope.row.phone }}
-        </template>
-      </el-table-column>
-      <el-table-column
-          label="身份证号"
-          align="center"
-      >
-        <template slot-scope="scope">
-          {{ scope.row.id_number}}
-        </template>
-      </el-table-column>
-
 
       <el-table-column
           label="操作"
@@ -151,23 +133,17 @@
           label-position="right"
           :rules = {required:true}
       >
-        <el-form-item label="账号">
-          <el-input v-model="temp.nickname" placeholder="请输入账号" />
+        <el-form-item label="创建时间">
+          <el-input v-model="temp.createTime" placeholder="请输入创建时间" />
         </el-form-item>
-        <el-form-item label="姓名">
-          <el-input v-model="temp.name" placeholder="请输入姓名" />
+        <el-form-item label="药物过敏史">
+          <el-input v-model="temp.drugSensitivityHistory" placeholder="请输入药物过敏史" />
         </el-form-item>
-        <el-form-item label="性别">
-          <el-input v-model="temp.sex" placeholder="请输入性别" />
+        <el-form-item label="病史">
+          <el-input v-model="temp.presentIllnessHistory" placeholder="请输入病史" />
         </el-form-item>
-        <el-form-item label="年龄">
-          <el-input v-model="temp.age" placeholder="请输入年龄" />
-        </el-form-item>
-        <el-form-item label="电话">
-          <el-input v-model="temp.phone" placeholder="请输入电话" />
-        </el-form-item>
-        <el-form-item label="身份证号">
-          <el-input v-model="temp.id_number" placeholder="请输入身份证号" />
+        <el-form-item label="主诉">
+          <el-input v-model="temp.chiefComplaint" placeholder="请输入主诉" />
         </el-form-item>
       </el-form>
       <el-button type="danger" @click="dialogVisible = false">
@@ -181,26 +157,26 @@
 </template>
 
 <script>
-import { insertPatient,deletePatient,updatePatient,getPatientByID,getAllPatient } from '@/api/getOutPatient.js';
+import { insertMedicalRecord,deleteMedicalRecord,updateMedicalRecord,getMedicalRecordById,getAllMedicalRecord } from '@/api/getMedicalRecord.js';
 import { setStorage, getStorage} from "@/utils/localStorage.js";
 import {
   deepClone
 } from "@/utils/index.js";
 const _temp = {
   id: '',
-  nickname: '',
-  name: '',
-  sex: '',
-  age:"",
-  phone:"",
-  id_number:"",
+  createTime: '',
+  drugSensitivityHistory: '',
+  presentIllnessHistory: '',
+  chiefComplaint:"",
+  departmentId:"",
+  doctorId:"",
 }
 export default {
   data() {
     return {
       listLoading: true, //查询时加载遮罩
       inputData: "",
-      patientList: [],
+      medicalRecordList: [],
       temp: Object.assign({}, _temp),
       dialogVisible: false, //弹出框显示
       dialogType: 'create',
@@ -215,15 +191,15 @@ export default {
   methods: {
     init() {
       this.listLoading = true;
-      getAllPatient({}).then((res) => {
+      getAllMedicalRecord({}).then((res) => {
         if (res != -1) {
           console.log(res);
           res.data.forEach((item, index) => {
             item.index = index + 1;
             //console.log(item)
           })
-          this.patientList = res.data;
-          this.total = this.patientList.length;
+          this.medicalRecordList = res.data;
+          this.total = this.medicalRecordList.length;
           this.listLoading = false;
         }
 
@@ -268,7 +244,7 @@ export default {
         }, 300)
         this.temp = deepClone(scope.row);
         let deldata = this.temp;
-        deletePatient(deldata).then((res) => {
+        deleteMedicalRecord(deldata).then((res) => {
           if (res != -1) {
             this.init()
           }
@@ -281,7 +257,7 @@ export default {
       }
       let data = this.temp;
       if (this.dialogType == 'modify') {
-        updatePatient(data).then((res) => {
+        updateMedicalRecord(data).then((res) => {
           if (res != -1) {
             this.$message({
               message: '提交成功',
@@ -292,7 +268,7 @@ export default {
           }
         })
       } else {
-        insertPatient(data).then((res) => {
+        insertMedicalRecord(data).then((res) => {
           if (res != -1) {
             this.$message({
               message: '提交成功',
