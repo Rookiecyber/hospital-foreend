@@ -23,7 +23,7 @@ export function updateDepartment(data){
 }
 export function getDepartmentByID(data){
     return request({
-        url: '/department/id/' + data,//请求接口
+        url: '/department/id/' + data.id,//请求接口
         method: 'get',//请求方式
         data
     })
