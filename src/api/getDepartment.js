@@ -9,7 +9,7 @@ export function insertDepartment(data){
 }
 export function deleteDepartment(data){
     return request({
-        url: '/department',//请求接口
+        url: '/department/' + data.id,//请求接口
         method: 'delete',//请求方式
         data
     })
@@ -23,7 +23,7 @@ export function updateDepartment(data){
 }
 export function getDepartmentByID(data){
     return request({
-        url: '/department/id',//请求接口
+        url: '/department/id/' + data,//请求接口
         method: 'get',//请求方式
         data
     })

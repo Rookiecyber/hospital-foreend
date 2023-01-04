@@ -2,9 +2,9 @@
   <div>
     <el-input
         style="width: 190px;margin-right: 40px;margin-top: 20px;margin-bottom: 20px;"
-        v-model="listQuery.keyword"
+        v-model="inputData"
         size="small"
-        placeholder="请输入药品名称"
+        placeholder="请输入科室名称"
         clearable
         class="filter-item"
     />
@@ -56,7 +56,7 @@
         </template>
       </el-table-column>
       <el-table-column
-          label="药品名称"
+          label="科室名称"
           width="200"
           align="center"
       >
@@ -65,7 +65,7 @@
         </template>
       </el-table-column>
       <el-table-column
-          label="生产商"
+          label="地点"
           width="180	"
           align="center"
       >
@@ -126,14 +126,14 @@
           label-position="right"
           :rules = {required:true}
       >
-        <el-form-item label="药品">
-          <el-input v-model="temp.name" placeholder="请输入药品名称" />
+        <el-form-item label="科室">
+          <el-input v-model="temp.name" placeholder="请输入科室名称" />
         </el-form-item>
-        <el-form-item label="厂家名">
-          <el-input v-model="temp.address" placeholder="请输入厂家名" />
+        <el-form-item label="地点">
+          <el-input v-model="temp.address" placeholder="请输入科室地点" />
         </el-form-item>
-        <el-form-item label="价格">
-          <el-input-number v-model="temp.telephone"  :min="0"  label="价格"></el-input-number>
+        <el-form-item label="电话">
+          <el-input v-model="temp.telephone"  :min="0"  label="电话"></el-input>
         </el-form-item>
       </el-form>
       <el-button type="danger" @click="dialogVisible = false">
@@ -153,7 +153,7 @@ import {
   deepClone
 } from "@/utils/index.js";
 const _temp = {
-  // id: '',
+  id: '',
   name: '',
   address: '',
   telephone: '',
@@ -162,7 +162,7 @@ export default {
   data() {
     return {
       listLoading: true, //查询时加载遮罩
-      listQuery: "",
+      inputData: "",
       departmentList: [],
       temp: Object.assign({}, _temp),
       dialogVisible: false, //弹出框显示
@@ -180,7 +180,6 @@ export default {
       this.listLoading = true;
       getAll({}).then((res) => {
         if (res != -1) {
-          console.log("这是res\n");
           console.log(res);
           res.data.forEach((item, index) => {
             item.index = index + 1;
@@ -209,7 +208,6 @@ export default {
       })
     },
     edit(scope) {
-      console.log("执行修改");
       console.log(scope.row);
       this.resetTemp()
       this.dialogVisible = true
@@ -227,7 +225,6 @@ export default {
         type: 'warning'
       }).then(() => {
         setTimeout(() => {
-          //this.list.splice(scope.$index, 1)
           this.$message({
             message: '删除成功',
             type: 'success'
@@ -235,8 +232,7 @@ export default {
         }, 300)
         this.temp = deepClone(scope.row);
         let deldata = this.temp;
-        deldata.companyTime=Date.parse(new Date(this.temp.companyTime));
-        deleteDrug(deldata).then((res) => {
+        deleteDepartment(deldata).then((res) => {
           if (res != -1) {
             this.init()
           }
@@ -273,19 +269,17 @@ export default {
       }
     },
     search() {
-      // let company = {
-      //   companyName: this.inputData
+      // let department = {
+      //   departmentName: this.inputData
       // }
       // this.listLoading = true;
-      // queryByName(company).then((res) => {
+      // getDepartmentByID(departmentId).then((res) => {
       //   if (res != -1) {
-      //     // console.log(company);
       //     res.datas.forEach((item, index) => {
       //       item.index = index + 1;
-      //       //console.log(item)
       //     })
-      //     this.companyList = res.datas;
-      //     this.total=this.companyList.length;
+      //     this.departmentList = res.datas;
+      //     this.total=this.departmentList.length;
       //     this.cur_page=1;
       //     this.listLoading = false;
       //   }
@@ -295,25 +289,16 @@ export default {
     handleSizeChange(val) {
       this.pageSize = val;
       this.cur_page = 1;
-      //console.log(this.companyList.slice((this.cur_page - 1) * this.pageSize, this.cur_page * this.pageSize));
     },
     // 分页导航
     handleCurrentChange(val) {
-      //console.log(val);
       this.cur_page = val;
-      //console.log(this.cur_page);
-      //console.log(this.companyList.slice((this.cur_page - 1) * this.pageSize, this.cur_page * this.pageSize));
     }
   },
 
   mounted() {
     this.$nextTick(() => {
       this.init();
-      // //页面初始化的时候执行
-      // this.initDocList();
-      // //this.testMap();
-      // //初始化获取类型数据
-      // this.initCategoryList();
     })
   },
 
