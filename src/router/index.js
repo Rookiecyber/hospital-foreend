@@ -8,7 +8,7 @@ import docManager from "@/page/managerPage/docManager";
 //data center部分
 import dataCenter from "@/page/dataCenter/dataCenter";
 import department from "@/page/dataCenter/department";
-import outPatient from "@/page/dataCenter/outPatient";
+import patient from "@/page/dataCenter/outPatient";
 import staff from "@/page/dataCenter/staff";
 
 import test from "@/page/test"
@@ -19,7 +19,7 @@ import projectPricing from "@/page/Outpatient/projectPricing";
 import projectPayment from "@/page/Outpatient/projectPayment";
 import projectCheck from "@/page/Outpatient/projectCheck";
 import drugPayment from "@/page/Outpatient/drugPayment";
-import outPatientBank from "@/page/Outpatient/outPatientBank";
+import medicalRecord from "@/page/Outpatient/medicalRecord";
 import drugManagement from "@/page/pharmacyManagement/drugManagement";
 import pharmacyManagement from "@/page/pharmacyManagement/pharmacyManagement";
 Vue.use(Router);
@@ -87,9 +87,9 @@ export default new Router({
 							}
 						},
 						{
-						path: '/outPatient',
-						name: 'outPatient',
-						component: outPatient,
+						path: '/patient',
+						name: 'patient',
+						component: patient,
 						meta: {
 							title: '门诊患者库'
 						}
@@ -152,11 +152,11 @@ export default new Router({
 							}
 						},
 						{
-							path: '/outPatientBank',
-							name: 'outPatientBank',
-							component:outPatientBank,
+							path: '/medicalRecord',
+							name: 'medicalRecord',
+							component:medicalRecord,
 							meta: {
-								title: '门诊患者库'
+								title: '病历编辑'
 							}
 						}
 					]

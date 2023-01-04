@@ -30,7 +30,7 @@
             <el-menu-item index="projectPayment">项目缴费</el-menu-item>
             <el-menu-item index="projectCheck">项目检查</el-menu-item>
             <el-menu-item index="drugPayment">药品缴费</el-menu-item>
-            <el-menu-item index="outPatientBank">门诊患者库</el-menu-item>
+            <el-menu-item index="medicalRecord">病历编辑</el-menu-item>
           </el-submenu>
           <el-submenu index="2">
             <template slot="title"><i class="el-icon-menu"></i>住院管理</template>
@@ -55,7 +55,7 @@
             <template slot="title"><i class="el-icon-view"></i>数据中心</template>
             <el-menu-item index="department" >1科室列表</el-menu-item>
             <el-menu-item index="staff">2员工列表</el-menu-item>
-            <el-menu-item index="outPatient">3门诊患者库</el-menu-item>
+            <el-menu-item index="patient">3门诊患者库</el-menu-item>
             <el-menu-item index="communication">4项目大类</el-menu-item>
             <el-menu-item index="communication">5挂号类型</el-menu-item>
             <el-menu-item index="communication">6仓库</el-menu-item>
