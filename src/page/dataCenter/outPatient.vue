@@ -56,7 +56,7 @@
           {{ scope.row.index }}
         </template>
       </el-table-column>
- 
+
       <el-table-column
           label="姓名"
           align="center"

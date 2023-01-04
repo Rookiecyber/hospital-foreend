@@ -56,14 +56,7 @@
           {{ scope.row.index }}
         </template>
       </el-table-column>
-      <el-table-column
-          label="创建时间"
-          align="center"
-      >
-        <template slot-scope="scope">
-          {{ scope.row.createTime }}
-        </template>
-      </el-table-column>
+
       <el-table-column
           label="药物过敏史"
           align="center"
@@ -133,9 +126,6 @@
           label-position="right"
           :rules = {required:true}
       >
-        <el-form-item label="创建时间">
-          <el-input v-model="temp.createTime" placeholder="请输入创建时间" />
-        </el-form-item>
         <el-form-item label="药物过敏史">
           <el-input v-model="temp.drugSensitivityHistory" placeholder="请输入药物过敏史" />
         </el-form-item>
@@ -162,9 +152,11 @@ import { setStorage, getStorage} from "@/utils/localStorage.js";
 import {
   deepClone
 } from "@/utils/index.js";
+let ttime = Date.now();
+setInterval(ttime,1000)
 const _temp = {
   id: '',
-  createTime: '',
+  createTime: ttime,
   drugSensitivityHistory: '',
   presentIllnessHistory: '',
   chiefComplaint:"",
@@ -275,6 +267,7 @@ export default {
               type: 'success'
             })
             this.dialogVisible = false
+            location.reload()
             this.init()
           }
         })
