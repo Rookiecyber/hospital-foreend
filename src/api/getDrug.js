@@ -24,7 +24,7 @@ export function getDrugByID(data){
 }
 export function deleteDrug(data){
     return request({
-        url: '/drug/id',//请求接口
+        url: '/drug/'+data.id,//请求接口
         method: 'delete',//请求方式
         data
     })

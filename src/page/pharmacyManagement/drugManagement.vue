@@ -249,7 +249,6 @@ export default {
         }, 300)
         this.temp = deepClone(scope.row);
         let deldata = this.temp;
-        deldata.companyTime=Date.parse(new Date(this.temp.companyTime));
         deleteDrug(deldata).then((res) => {
           if (res != -1) {
             this.init()
