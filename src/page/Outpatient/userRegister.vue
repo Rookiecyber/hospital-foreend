@@ -12,7 +12,7 @@
         <el-input v-model="registerRecord.name"></el-input>
       </el-form-item>
       <el-form-item label="科室">
-        <el-select v-model="registerRecord.dep" placeholder="请选择">
+        <el-select v-model="registerRecord.dep" placeholder="请选择" @change="keshi()">
           <el-option
               v-for="item in departmentList"
               :key="item.id"
@@ -22,9 +22,10 @@
         </el-select>
       </el-form-item>
       <el-form-item label="医生">
-        <el-select v-model="registerRecord.doctor" placeholder="请选择">
+        <el-select v-model="registerRecord.doctor" placeholder="请选择"
+                   clearable="true" @clear="clear()">
           <el-option
-              v-for="item in doctorList"
+              v-for="item   in doctorList"
               :key="item.id"
               :label="item.name"
               :value="item.id">
@@ -79,9 +80,11 @@ const _temp = {
   doctorId: '',
   department_id: '',
 }
+
 export default {
   data() {
     return {
+
       registerRecord: {
         name: '',
         dep: '',
@@ -90,23 +93,59 @@ export default {
       },
       departmentList:[],//部门信息
       doctorList:[],//医生信息
+      staffList:[],
+      i:0,
     }
   },
 
   methods: {
+    clear(){
+
+    },
+    initstaff() {
+      getAllStaff({}).then((res) => {
+        if (res != -1) {
+          console.log("staff结果");
+          console.log(res);
+          this.staffList = res.data;
+          console.log(this.staffList);
+          // res.data.forEach((item, index) => {
+          //   doctorandDep.name = item.staff.nickname;
+          //   doctorandDep.de
+          // })
+        }
+
+      })
+    },
+    keshi(){
+      console.log("当前的科室id"+this.registerRecord.dep);
+      if(this.registerRecord.dep){
+        this.doctorList=this.staffList[this.registerRecord.dep].staffs;
+      }else{
+        this.doctorList=this.staffList[0].staffs;
+      }
+      console.log("当前医生");
+      console.log(this.doctorList);
+      this.staffList.forEach((item, index)=>{
+        if(index == this.registerRecord.dep){
+          this.doctorList = item.staffs;
+        }
+      });
+      this.registerRecord.name ='';
+    },
     initdepartment() {
       getAll({}).then((res) => {
         if (res != -1) {
           console.log("部门结果");
           console.log(res);
           this.departmentList = res.data;
-
         }
 
       })
     },
     onSubmit(){ //点击挂号
-      let data = registerRecord;
+      let data = this.registerRecord;
+      console.log("开始挂号");
       console.log(data);
       addRecord(data).then((res)=>{
         if(res!=-1){
@@ -116,96 +155,18 @@ export default {
     },
     pay() {
       const h = this.$createElement;
-
       this.$notify({
         title: '缴费成功',
         message: h('i', { style: 'color: teal'}, '你已成功缴费'+this.registerRecord.fee+"元")
       });
     },
-    initCarList(){
-      this.listLoading = false;
-      getAllDrug({}).then((res)=>{
-        console.log("****药品：：：：");
-        console.log(res);
-        console.log(res.data);
-        // consol.log(JSON.parse(res.data));
-        if(res != -1){
-          console.log("这是res\n");
-          console.log(res);
-          res.data.forEach((item, index) => {
-            item.index = index+1;
-            //console.log(item)
-          })
-          this.drugList = res.data;
-          this.listLoading = false;
-        }
 
-      })
-    },
-    refresh() {
-      //  this.listQuery = {
-      // page: 1,
-      // limit: 20,
-      // created_at: undefined,
-      // status: undefined,
-      // keyword: undefined
-      //  }
-      this.initCarList()
-    },
-    resetTemp() {
-      this.temp = Object.assign({}, _temp)
-    },
-    add() {
-      this.resetTemp()
-      this.dialogVisible = true
-      this.dialogType = 'create'
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    edit(scope) {
-      this.resetTemp()
-      this.dialogVisible = true
-      this.dialogType = 'modify'
-      this.temp = deepClone(scope.row)
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    del(scope) {
-      this.$confirm('确认删除该条数据吗？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        setTimeout(() => {
-          this.list.splice(scope.$index, 1)
-          this.$message({
-            message: '删除成功',
-            type: 'success'
-          })
-        }, 300)
-      })
-    },
-    submit() {
-      if (this.listLoading) {
-        return
-      }
-      this.listLoading = true
-      setTimeout(() => {
-        this.$message({
-          message: '提交成功',
-          type: 'success'
-        })
-        this.dialogVisible = false
-        this.loading = false
-      }, 300)
-    }
   },
 
   mounted() {
     this.$nextTick(() => {
       this.initdepartment();//获取部门结果
+      this.initstaff();
     })
   },
 

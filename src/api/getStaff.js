@@ -30,7 +30,7 @@ export function getStaffByID(data){
 }
 export function getAllStaff(data){
     return request({
-        url: '/staff',//请求接口
+        url: '/staff/doctor',//请求接口
         method: 'get',//请求方式
         data
     })
