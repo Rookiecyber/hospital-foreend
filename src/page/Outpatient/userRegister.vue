@@ -1,211 +1,127 @@
 <template>
+
   <div>
-    <el-input
-        style="width: 190px;margin-right: 40px;margin-top: 20px;margin-bottom: 20px;"
-        v-model="listQuery.keyword"
-        size="small"
-        placeholder="请输入药品名称"
-        clearable
-        class="filter-item"
-    />
-    <el-button-group style="margin-right: 20px;margin-top: 20px;margin-bottom: 20px;"
-                     class="filter-item">
-      <el-button
-          size="small"
-          type="primary"
-          icon="el-icon-search"
-          @click="search"
-      >
-        搜索
-      </el-button>
-      <el-button
-          size="small"
-          type="primary"
-          icon="el-icon-refresh"
-          @click="refresh"
-      >
-        刷新
-      </el-button>
-      <el-button
-          size="small"
-          type="primary"
-          icon="el-icon-plus"
-          @click="add"
-      >
-        新增
-      </el-button>
-    </el-button-group>
+<!--    <el-button-->
+<!--        style="width: 190px;margin-right: 40px;margin-top: 20px;margin-bottom: 20px;"-->
+<!--        type="primary" @click="dialog = true" >-->
+<!--      点击开始挂号-->
+<!--    </el-button>-->
+    <el-form  style="margin-top:20px"
+        ref="form" :model="registerRecord" label-width="80px">
+      <el-form-item label="病人姓名" style="width: 620px">
+        <el-input v-model="registerRecord.name"></el-input>
+      </el-form-item>
+      <el-form-item label="科室">
+        <el-select v-model="registerRecord.dep" placeholder="请选择">
+          <el-option
+              v-for="item in departmentList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="医生">
+        <el-select v-model="registerRecord.doctor" placeholder="请选择">
+          <el-option
+              v-for="item in doctorList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="预约时间">
+        <el-col :span="11">
+          <el-date-picker type="date" placeholder="选择日期" v-model="registerRecord.createTime" style="width: 100%;"></el-date-picker>
+        </el-col>
+        <el-col class="line" :span="2">-</el-col>
+<!--        <el-col :span="11">-->
+<!--          <el-time-picker placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>-->
+<!--        </el-col>-->
+      </el-form-item>
 
-    <el-table
-        v-loading="listLoading"
-        :data="drugList"
-        element-loading-text="正在疯狂加载"
-        border
-        fit
-        height="500px"
-        class="table-container"
-        highlight-current-row
-    >
-      <el-table-column
-          label="序号"
-          width="100"
-          align="center"
-      >
-        <template slot-scope="scope">
-          {{ scope.row.index }}
-        </template>
-      </el-table-column>
-      <el-table-column
-          label="药品名称"
-          width="200"
-          align="center"
-      >
-        <template slot-scope="scope">
-          {{ scope.row.name }}
-        </template>
-      </el-table-column>
-      <el-table-column
-          label="生产商"
-          width="180	"
-          align="center"
-      >
-        <template slot-scope="scope">
-          {{ scope.row.manufactor }}
-        </template>
-      </el-table-column>
-      <el-table-column
-          label="单价"
-          width="170"
-          align="center"
-      >
-        <template slot-scope="scope">
-          <span>{{ scope.row.price }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-          label="库存数量"
-          width="200"
-          align="center"
-      >
-        <template slot-scope="scope">
-          {{ scope.row.inventory }}
-        </template>
-      </el-table-column>
-      <!--      <el-table-column-->
-      <!--          label="车辆品牌"-->
-      <!--          width="160"-->
-      <!--          align="center"-->
-      <!--      >-->
-      <!--        <template slot-scope="scope">-->
-      <!--          {{ scope.row.carBrand }}-->
-      <!--        </template>-->
-      <!--      </el-table-column>-->
-      <el-table-column
-          fixed="right"
-          label="操作"
-          width="200"
-          align="left"
-      >
-        <template slot-scope="scope">
-          <el-button-group>
-            <el-button
-                type="primary"
-                icon="el-icon-edit"
-                size="mini"
-                @click="edit(scope)"
-            >
-              修改
-            </el-button>
-            <el-button
-                type="danger"
-                icon="el-icon-delete"
-                size="mini"
-                @click="del(scope)"
-            >
-              删除
-            </el-button>
-          </el-button-group>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <el-dialog
-        :visible.sync="dialogVisible"
-        :title="dialogType === 'modify' ? '修改' : '新增'"
-    >
-      <el-form
-          ref="dataForm"
-          :model="temp"
-          label-width="150px"
-          label-position="right"
-      >
-        <el-form-item label="车牌号">
-          <el-input v-model="temp.carNumber" placeholder="请输入车牌号" />
-        </el-form-item>
-        <el-form-item label="车型">
-          <el-input v-model="temp.carStyle" placeholder="请输入车型" />
-        </el-form-item>
-        <el-form-item label="车辆载重(单位:吨)">
-          <el-input v-model="temp.carLoad" placeholder="请输入车辆载重(单位:吨)" />
-        </el-form-item>
-        <el-form-item label="车辆里程数(单位:千米)">
-          <el-input v-model="temp.carMileage" placeholder="请输入车辆里程数(单位:千米)" />
-        </el-form-item>
-        <el-form-item label="车辆品牌">
-          <el-input v-model="temp.carBrand" placeholder="请输入车辆品牌" />
-        </el-form-item>
-      </el-form>
-      <el-button type="danger" @click="dialogVisible = false">
-        取消
-      </el-button>
-      <el-button type="primary" @click="submit">
-        确定
-      </el-button>
-    </el-dialog>
+      <el-form-item label="挂号费">
+        <el-input-number v-model="registerRecord.fee"  :min="0"  label="挂号费"></el-input-number>
+      </el-form-item>
+<!--      <el-form-item label="活动性质">-->
+<!--        <el-checkbox-group v-model="form.type">-->
+<!--          <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>-->
+<!--          <el-checkbox label="地推活动" name="type"></el-checkbox>-->
+<!--          <el-checkbox label="线下主题活动" name="type"></el-checkbox>-->
+<!--          <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>-->
+<!--        </el-checkbox-group>-->
+<!--      </el-form-item>-->
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit">立即创建</el-button>
+        <el-button type="danger" @click="pay">缴费</el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
 <script>
 import { getAllDrug } from '@/api/getDrug.js';
+import {getAll} from "@/api/getDepartment.js";
+import {getAllStaff} from "@/api/getStaff.js";
+import {addRecord} from "@/api/getRegisterRecord.js";
 import { setStorage, getStorage} from "@/utils/localStorage.js";
 const _temp = {
   // id: '',
-  carNumber: '',
-  carStyle: '',
-  carLoad: '',
-  carMileage: '',
-  carBrand: '',
+  create_time: '',
+  fee: '',
+  is_paid: '',
+  is_hang_up: '',
+  is_canceled: '',
+  is_completed: '',
+  is_refunded: '',
+  patientId: '',
+  doctorId: '',
+  department_id: '',
 }
 export default {
   data() {
     return {
-      // carList: [{
-      // 	index:1,
-      //   carNumber: '2016-05-03',
-      //   carStyle: '王小虎',
-      //   carLoad: '上海市普陀区金沙江路 1518 弄',
-      //   carMileage: 150,
-      //   carBrand:"大众"
-      // },],//用于存放doc数据
-      selectData: "",//被选择的下拉
-      queryData: "",//用于条件查询
-      categoryList: [],//用于接收类型数据
-      listLoading:true,//查询时加载遮罩
-      drugList:[],
-      listQuery:{
-        page: 1,
-        limit: 20,
-        created_at: undefined,
-        status: undefined,
-        keyword: undefined
+      registerRecord: {
+        name: '',
+        dep: '',
+        doctor: '',
+        createTime:''
       },
-      temp: Object.assign({}, _temp),
-      dialogVisible: false,   //弹出框显示
-      dialogType: 'create',
+      departmentList:[],//部门信息
+      doctorList:[],//医生信息
     }
   },
 
   methods: {
+    initdepartment() {
+      getAll({}).then((res) => {
+        if (res != -1) {
+          console.log("部门结果");
+          console.log(res);
+          this.departmentList = res.data;
+
+        }
+
+      })
+    },
+    onSubmit(){ //点击挂号
+      let data = registerRecord;
+      console.log(data);
+      addRecord(data).then((res)=>{
+        if(res!=-1){
+          console.log("挂号成功");
+        }
+      })
+    },
+    pay() {
+      const h = this.$createElement;
+
+      this.$notify({
+        title: '缴费成功',
+        message: h('i', { style: 'color: teal'}, '你已成功缴费'+this.registerRecord.fee+"元")
+      });
+    },
     initCarList(){
       this.listLoading = false;
       getAllDrug({}).then((res)=>{
@@ -285,50 +201,11 @@ export default {
         this.loading = false
       }, 300)
     }
-    // //获取类型数据
-    // initCategoryList(){
-    // 	getCategoryByCondition({}).then(res => {
-    // 		//新增一个全部,放到数组最前面
-    // 		if(res != -1){
-    // 			res.datas.unshift({categoryId : "", categoryName: "全部"});
-    // 			this.categoryList = res.datas;
-    // 		}
-    // 	});
-    // },
-    // //获取文档数据
-    // initDocList(){
-    // 	this.loading = true;
-    // 	//获取用户输入/选择的查询条件
-    // 	let data = {
-    // 		categoryId : this.selectData,
-    // 		docTitle: this.queryData
-    // 	}
-    // 	getDocByCondition(data).then((res) => {
-    // 		if(res != -1){
-    // 			this.docList = res.datas;
-    // 			this.loading = false;
-    // 		}
-    // 		//条件筛选遍历
-    // 		/* let filterArr = this.docList.filter((item, index) => {
-    // 			return item.docId % 5 == 0;
-    // 		}); */
-    // 	})
-    // },
-    // selectDoc(){
-    // 	docSelectOne({id: 105}).then()
-    // },
   },
-  // created() {
-  //   this.initCarList();
-  // },
+
   mounted() {
     this.$nextTick(() => {
-      this.initCarList();
-      // //页面初始化的时候执行
-      // this.initDocList();
-      // //this.testMap();
-      // //初始化获取类型数据
-      // this.initCategoryList();
+      this.initdepartment();//获取部门结果
     })
   },
 

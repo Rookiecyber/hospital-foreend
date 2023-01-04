@@ -25,6 +25,7 @@
             <template slot="title"><i class="el-icon-first-aid-kit"></i>门诊管理</template>
 
             <el-menu-item index="userRegister">用户挂号</el-menu-item>
+            <el-menu-item index="call">排队叫号</el-menu-item>
             <el-menu-item index="prescriptionPrice">处方划价</el-menu-item>
             <el-menu-item index="projectPricing">项目划价</el-menu-item>
             <el-menu-item index="projectPayment">项目缴费</el-menu-item>

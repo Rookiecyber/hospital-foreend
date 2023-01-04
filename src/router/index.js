@@ -22,6 +22,7 @@ import drugPayment from "@/page/Outpatient/drugPayment";
 import outPatientBank from "@/page/Outpatient/outPatientBank";
 import drugManagement from "@/page/pharmacyManagement/drugManagement";
 import pharmacyManagement from "@/page/pharmacyManagement/pharmacyManagement";
+import call from "@/page/Outpatient/call";
 Vue.use(Router);
 
 export default new Router({
@@ -111,6 +112,15 @@ export default new Router({
 							title: '用户挂号'
 						}
 					},
+						{
+							path: '/call',
+							name: 'call',
+							component: call,
+							meta: {
+								title: '排队叫号'
+							}
+						}
+						,
 						{
 							path: '/prescriptionPrice',
 							name: 'prescriptionPrice',
