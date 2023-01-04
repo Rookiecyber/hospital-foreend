@@ -56,14 +56,7 @@
           {{ scope.row.index }}
         </template>
       </el-table-column>
-      <el-table-column
-          label="账号"
-          align="center"
-      >
-        <template slot-scope="scope">
-          {{ scope.row.nickname }}
-        </template>
-      </el-table-column>
+ 
       <el-table-column
           label="姓名"
           align="center"

@@ -34,42 +34,13 @@
             <el-menu-item index="medicalRecord">病历编辑</el-menu-item>
           </el-submenu>
           <el-submenu index="2">
-            <template slot="title"><i class="el-icon-menu"></i>住院管理</template>
-
-            <el-menu-item index="carManage">入院登记</el-menu-item>
-            <el-menu-item index="goodsManage">缴费管理</el-menu-item>
-            <el-menu-item index="goodsManage">药品记账</el-menu-item>
-            <el-menu-item index="goodsManage">项目记账</el-menu-item>
-            <el-menu-item index="goodsManage">出院结算</el-menu-item>
-          </el-submenu>
-          <el-submenu index="3">
-            <template slot="title"><i class="el-icon-setting"></i>系统管理</template>
-            <el-menu-item index="carFixLog">菜单管理</el-menu-item>
-            <el-menu-item index="carFixLog">角色管理</el-menu-item>
-            <el-menu-item index="carFixLog">用户管理</el-menu-item>
-          </el-submenu>
-          <el-submenu index="4">
-            <template slot="title"><i class="el-icon-truck"></i>统计管理</template>
-            <el-menu-item index="carOperation">车辆运输记录</el-menu-item>
-          </el-submenu>
-          <el-submenu index="5">
             <template slot="title"><i class="el-icon-view"></i>数据中心</template>
             <el-menu-item index="department" >1科室列表</el-menu-item>
             <el-menu-item index="staff">2员工列表</el-menu-item>
             <el-menu-item index="patient">3门诊患者库</el-menu-item>
-            <el-menu-item index="communication">4项目大类</el-menu-item>
-            <el-menu-item index="communication">5挂号类型</el-menu-item>
-            <el-menu-item index="communication">6仓库</el-menu-item>
           </el-submenu>
-          <el-submenu index="6">
-            <template slot="title"><i class="el-icon-bangzhu"></i>排班管理</template>
-            <el-menu-item index="communication">医生排班</el-menu-item>
-          </el-submenu>
-          <el-submenu index="7">
-            <template slot="title"><i class="el-icon-wallet"></i>仓库管理</template>
-            <el-menu-item index="communication">医生排班</el-menu-item>
-          </el-submenu>
-          <el-submenu index="9">
+
+          <el-submenu index="3">
             <template slot="title"><i class="el-icon-coffee"></i>药房管理</template>
             <el-menu-item index="drugManagement">药品管理</el-menu-item>
           </el-submenu>
@@ -89,14 +60,7 @@
 					</el-breadcrumb>
 				</div>
 
-				<!-- <el-table :data="tableData">
-					<el-table-column prop="date" label="日期" width="140">
-					</el-table-column>
-					<el-table-column prop="name" label="姓名" width="120">
-					</el-table-column>
-					<el-table-column prop="address" label="地址">
-					</el-table-column>
-				</el-table> -->
+
 				<router-view>
 					<router-view></router-view>
 				</router-view>
