@@ -42,13 +42,14 @@
         element-loading-text="正在疯狂加载"
         border
         fit
-        height="500px"
+        style="height: 100%;font-size: 20px;width: 100%"
+        :row-style="{height:'75px'}"
+        :cell-style="{padding:'0px'}"
         class="table-container"
         highlight-current-row
     >
       <el-table-column
           label="序号"
-          width="100"
           align="center"
       >
         <template slot-scope="scope">
@@ -57,7 +58,6 @@
       </el-table-column>
       <el-table-column
           label="账号"
-          width="200"
           align="center"
       >
         <template slot-scope="scope">
@@ -66,7 +66,6 @@
       </el-table-column>
       <el-table-column
           label="姓名"
-          width="200"
           align="center"
       >
         <template slot-scope="scope">
@@ -75,7 +74,6 @@
       </el-table-column>
       <el-table-column
           label="性别"
-          width="200"
           align="center"
       >
         <template slot-scope="scope">
@@ -84,7 +82,6 @@
       </el-table-column>
       <el-table-column
           label="职称"
-          width="200"
           align="center"
       >
         <template slot-scope="scope">
@@ -93,7 +90,6 @@
       </el-table-column>
       <el-table-column
           label="年龄"
-          width="200"
           align="center"
       >
         <template slot-scope="scope">
@@ -102,7 +98,6 @@
       </el-table-column>
       <el-table-column
           label="职务"
-          width="200"
           align="center"
       >
         <template slot-scope="scope">
@@ -112,7 +107,6 @@
 
       <el-table-column
           label="操作"
-          width="200"
           align="center"
       >
         <template slot-scope="scope">
