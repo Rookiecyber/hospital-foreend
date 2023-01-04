@@ -131,7 +131,7 @@ export default {
           this.doctorList = item.staffs;
         }
       });
-      this.registerRecord.name ='';
+      this.registerRecord.doctor ='';
     },
     initdepartment() {
       getAll({}).then((res) => {
@@ -144,10 +144,24 @@ export default {
       })
     },
     onSubmit(){ //点击挂号
-      let data = this.registerRecord;
+     // let data = this.registerRecord;
       console.log("开始挂号");
-      console.log(data);
-      addRecord(data).then((res)=>{
+      // console.log(data);
+      //let data =
+      console.log(this.registerRecord);
+      addRecord({
+        // id: '',
+        create_time: new Date().getTime()+'',
+        fee: this.registerRecord.fee,
+        is_paid: 0,
+        is_hang_up: 0,
+        is_canceled: 0,
+        is_completed: 0,
+        is_refunded: 0,
+        patientId: this.registerRecord.id,
+        doctorId: this.registerRecord.doctor,
+        department_id: this.registerRecord.dep,
+      }).then((res)=>{
         if(res!=-1){
           console.log("挂号成功");
         }
