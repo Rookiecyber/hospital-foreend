@@ -8,7 +8,7 @@
 <!--    </el-button>-->
     <el-form  style="margin-top:20px"
         ref="form" :model="registerRecord" label-width="80px">
-      <el-form-item label="病人姓名" style="width: 620px">
+      <el-form-item label="病人ID" style="width: 620px">
         <el-input v-model="registerRecord.name"></el-input>
       </el-form-item>
       <el-form-item label="科室">
@@ -120,17 +120,17 @@ export default {
     keshi(){
       console.log("当前的科室id"+this.registerRecord.dep);
       if(this.registerRecord.dep){
-        this.doctorList=this.staffList[this.registerRecord.dep].staffs;
+        this.doctorList=this.staffList[this.registerRecord.dep-1].staffs;
       }else{
         this.doctorList=this.staffList[0].staffs;
       }
       console.log("当前医生");
       console.log(this.doctorList);
-      this.staffList.forEach((item, index)=>{
-        if(index == this.registerRecord.dep){
-          this.doctorList = item.staffs;
-        }
-      });
+      // this.staffList.forEach((item, index)=>{
+      //   if(index == this.registerRecord.dep){
+      //     this.doctorList = item.staffs;
+      //   }
+      // });
       this.registerRecord.doctor ='';
     },
     initdepartment() {
@@ -158,12 +158,17 @@ export default {
         isCanceled: 0,
         isCompleted: 0,
         isRefunded: 0,
-        patientId: this.registerRecord.id,
+        patientId: this.registerRecord.name,
         doctorId: this.registerRecord.doctor,
         departmentId: this.registerRecord.dep,
       }).then((res)=>{
         if(res!=-1){
           console.log("挂号成功");
+          const h = this.$createElement;
+          this.$notify({
+            title: '挂号成功',
+            message: h('i', { style: 'color: teal'}, "挂号成功")
+          });
         }
       })
     },

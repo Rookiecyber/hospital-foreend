@@ -15,7 +15,7 @@ import test from "@/page/test"
 import outpatient from "@/page/Outpatient/outpatient";
 import userRegister from "@/page/Outpatient/userRegister";
 import prescriptionPrice from "@/page/Outpatient/CheckApplyFor";
-import projectPricing from "@/page/Outpatient/projectPricing";
+import projectPricing from "@/page/Outpatient/prescription";
 import projectPayment from "@/page/Outpatient/projectPayment";
 import projectCheck from "@/page/Outpatient/projectCheck";
 import drugPayment from "@/page/Outpatient/drugPayment";
@@ -24,6 +24,7 @@ import drugManagement from "@/page/pharmacyManagement/drugManagement";
 import pharmacyManagement from "@/page/pharmacyManagement/pharmacyManagement";
 import call from "@/page/Outpatient/call";
 import CheckApplyFor from "@/page/Outpatient/CheckApplyFor";
+import prescription from "@/page/Outpatient/prescription";
 Vue.use(Router);
 
 export default new Router({
@@ -131,11 +132,11 @@ export default new Router({
 							}
 						},
 						{
-							path: '/projectPricing',
-							name: 'projectPricing',
-							component:projectPricing,
+							path: '/prescription',
+							name: 'prescription',
+							component:prescription,
 							meta: {
-								title: '项目划价'
+								title: '开处方'
 							}
 						},
 						{
