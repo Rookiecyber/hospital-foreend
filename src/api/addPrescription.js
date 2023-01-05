@@ -11,21 +11,21 @@ export function addPrescription(data){
 
 export function checkPrescription(data){
     return request({
-        url: '/checkPrescription/'+data.id,//请求接口
+        url: '/prescription/checkPrescription/'+data.id,//请求接口
         method: 'get',//请求方式
         data
     })
 }
 export function pay(data){
     return request({
-        url: '/pay/'+data.id,//请求接口
+        url: '/prescription/pay/'+data.id,//请求接口
         method: 'get',//请求方式
         data
     })
 }
 export function receive(data){
     return request({
-        url: '/receive/'+data.id,//请求接口
+        url: '/prescription/receive/'+data.id,//请求接口
         method: 'get',//请求方式
         data
     })
