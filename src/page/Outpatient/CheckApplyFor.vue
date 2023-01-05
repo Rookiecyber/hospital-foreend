@@ -1,67 +1,9 @@
 <template>
   <div>
-    <!-- 用的是这个接口！！！！！！！！！！！！ -->
-    <!-- 127.0.0.1/prescription/getUnauditedPrescription -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <el-input
-        style="width: 190px;margin-right: 40px;margin-top: 20px;margin-bottom: 20px;"
-        v-model="inputData"
-        size="small"
-        placeholder="请输入信息"
-        clearable
-        class="filter-item"
-    />
-    <el-button-group style="margin-right: 20px;margin-top: 20px;margin-bottom: 20px;"
-                     class="filter-item">
-      <el-button
-          size="small"
-          type="primary"
-          icon="el-icon-search"
-          @click="search"
-      >
-        搜索
-      </el-button>
-      <el-button
-          size="small"
-          type="primary"
-          icon="el-icon-refresh"
-          @click="refresh"
-      >
-        刷新
-      </el-button>
-    </el-button-group>
 
     <el-table
         v-loading="listLoading"
-        :data="medicalRecordList.slice((cur_page-1)*pageSize,cur_page*pageSize)"
+        :data="auditCommentList.slice((cur_page-1)*pageSize,cur_page*pageSize)"
         element-loading-text="正在疯狂加载"
         border
         fit
@@ -80,31 +22,29 @@
         </template>
       </el-table-column>
       <el-table-column
-          label="药物过敏史"
+          label="药方单号"
           align="center"
       >
         <template slot-scope="scope">
-          {{ scope.row.drugSensitivityHistory }}
+          {{ scope.row.prescriptionId }}
         </template>
       </el-table-column>
       <el-table-column
-          label="病史"
+          label="是否通过"
           align="center"
       >
         <template slot-scope="scope">
-          {{ scope.row.presentIllnessHistory }}
+          {{ scope.row.isPassed }}
         </template>
       </el-table-column>
-
       <el-table-column
-          label="主诉"
+          label="审核意见"
           align="center"
       >
         <template slot-scope="scope">
-          {{ scope.row.chiefComplaint }}
+          <span>{{ scope.row.auditComment }}</span>
         </template>
       </el-table-column>
-
       <el-table-column
           label="操作"
           align="center"
@@ -113,7 +53,7 @@
           <el-button-group>
             <el-button
                 type="primary"
-                icon="el-icon-bell"
+                icon="el-icon-edit"
                 size="mini"
                 @click="edit(scope)"
             >
@@ -123,16 +63,16 @@
                 type="primary"
                 icon="el-icon-delete"
                 size="mini"
-                @click="drawer = true"
+
             >
-              查看处方
+              查看处方单
             </el-button>
           </el-button-group>
         </template>
       </el-table-column>
     </el-table>
     <!-- 分页组件ui -->
-    <div style="margin-top:20px" class="pagination">
+    <div style="width: 100%;height: 100%" class="pagination">
       <el-pagination background @current-change="handleCurrentChange" @size-change="handleSizeChange"
                      :current-page="cur_page" :page-sizes="[10,15,20,50]" :page-size="pageSize"
                      layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
@@ -149,12 +89,9 @@
           :rules = {required:true}
       >
         <el-form-item label="是否通过">
-          <el-radio v-model="radio" label="1">通过</el-radio>
-          <el-radio v-model="radio" label="2">不通过</el-radio>
+          <el-input v-model="temp.isPassed" placeholder="请输入" />
         </el-form-item>
-        <el-form-item label="审核意见">
-          <el-input v-model="temp.drugSensitivityHistory" placeholder="请输入审核意见" />
-        </el-form-item>
+
       </el-form>
       <el-button type="danger" @click="dialogVisible = false">
         取消
@@ -163,60 +100,28 @@
         确定
       </el-button>
     </el-dialog>
-
-    <el-drawer
-        title="处方内容"
-        :visible.sync="drawer"
-        :direction="direction"
-        :before-close="handleClose">
-      <el-card class="box-card">
-        <div v-for="o in 4" :key="o" >
-          <el-row :gutter="20">
-            <el-col :span="20">
-              <div class="grid-content bg-purple">
-                {{'药品 ' + o }}
-              </div>
-            </el-col>
-            <el-col :span="4">
-              <div class="grid-content bg-purple">
-                x{{o}}
-              </div>
-            </el-col>
-          </el-row>
-          <div slot="header">
-            <span></span>
-            <span style="float: right;"></span>
-          </div>
-        </div>
-      </el-card>
-    </el-drawer>
   </div>
 </template>
 
 <script>
-import { insertMedicalRecord,deleteMedicalRecord,updateMedicalRecord,getMedicalRecordById,getAllMedicalRecord } from '@/api/getMedicalRecord.js';
+import { insertAuditResult,deleteAuditResult,updateAuditResult,getAllAuditResult,isPassed } from '@/api/getAuditResult.js';
 import { setStorage, getStorage} from "@/utils/localStorage.js";
 import {
   deepClone
 } from "@/utils/index.js";
 const _temp = {
   id: '',
-  createTime: '',
-  drugSensitivityHistory: '',
-  presentIllnessHistory: '',
-  chiefComplaint:"",
-  departmentId:"",
-  doctorId:"",
+  pharmacistId:"",
+  prescriptionId:"",
+  isPassed:'',
+  auditComment: '',
 }
 export default {
   data() {
     return {
-      drawer: false,
-      direction: 'ltr',
-      radio: '1',
       listLoading: true, //查询时加载遮罩
       inputData: "",
-      medicalRecordList: [],
+      auditCommentList: [],
       temp: Object.assign({}, _temp),
       dialogVisible: false, //弹出框显示
       dialogType: 'create',
@@ -229,24 +134,17 @@ export default {
   },
 
   methods: {
-    handleClose(done) {
-      this.$confirm('确认关闭？')
-          .then(_ => {
-            done();
-          })
-          .catch(_ => {});
-    },
     init() {
       this.listLoading = true;
-      getAllMedicalRecord({}).then((res) => {
+      getAllAuditResult({}).then((res) => {
         if (res != -1) {
           console.log(res);
           res.data.forEach((item, index) => {
             item.index = index + 1;
             //console.log(item)
           })
-          this.medicalRecordList = res.data;
-          this.total = this.medicalRecordList.length;
+          this.auditCommentList = res.data;
+          this.total = this.auditCommentList.length;
           this.listLoading = false;
         }
 
@@ -273,38 +171,19 @@ export default {
       this.dialogVisible = true
       this.dialogType = 'modify'
       this.temp = deepClone(scope.row)
+      //console.log(this.temp)
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    del(scope) {
-      this.$confirm('确认删除该条数据吗？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        setTimeout(() => {
-          this.$message({
-            message: '删除成功',
-            type: 'success'
-          })
-        }, 300)
-        this.temp = deepClone(scope.row);
-        let deldata = this.temp;
-        deleteMedicalRecord(deldata).then((res) => {
-          if (res != -1) {
-            this.init()
-          }
-        })
-      })
-    },
+
     submit() {
       if (this.listLoading) {
         return
       }
       let data = this.temp;
       if (this.dialogType == 'modify') {
-        updateMedicalRecord(data).then((res) => {
+        updateAuditResult(data).then((res) => {
           if (res != -1) {
             this.$message({
               message: '提交成功',
@@ -315,7 +194,7 @@ export default {
           }
         })
       } else {
-        insertMedicalRecord(data).then((res) => {
+        insertAuditResult(data).then((res) => {
           if (res != -1) {
             this.$message({
               message: '提交成功',
@@ -328,7 +207,7 @@ export default {
       }
     },
     search() {
-      //待编写
+
     },
     // 分页导航改变页码大小在method里定义
     handleSizeChange(val) {
@@ -350,11 +229,7 @@ export default {
 }
 </script>
 
-<style>
-.box-card {
-  margin:0px auto ;
-  width: 480px;
-}
+<style lang="scss">
 .w-200{
   width: 200px;
 }
@@ -363,4 +238,6 @@ export default {
   vertical-align: middle;
   margin-bottom: 10px;
 }
+
+
 </style>
