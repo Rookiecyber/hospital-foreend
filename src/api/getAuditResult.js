@@ -36,6 +36,13 @@ export function getAllAuditResult(data){
         data
     })
 }
+export function getByPrescriptionId(data){
+    return request({
+        url: '/audit-result/getByPrescriptionId/' + data,//请求接口
+        method: 'get',//请求方式
+        data
+    })
+}
 
 
 // 1.登录
