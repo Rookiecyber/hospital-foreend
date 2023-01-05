@@ -19,7 +19,6 @@
         :cell-style="{padding:'0px'}"
         class="table-container"
         highlight-current-row
-        v-show="isShow"
 
     >
       <el-table-column
