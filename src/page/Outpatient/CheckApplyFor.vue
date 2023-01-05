@@ -63,7 +63,7 @@
                 type="primary"
                 icon="el-icon-delete"
                 size="mini"
-
+                @click="chufang(scope)"
             >
               查看处方单
             </el-button>
@@ -71,6 +71,15 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog title="处方" :visible.sync="dialogTableVisible">
+      <el-table :data="drugList">
+        <el-table-column property="name" label="药名" width="200"></el-table-column>
+        <el-table-column property="count" label="数量" width="100"></el-table-column>
+        <el-table-column property="price" label="价格" width="100"></el-table-column>
+        <el-table-column property="total" label="总共" width="100"></el-table-column>
+      </el-table>
+<!--      <el-button @click="tijiao()">提交</el-button>-->
+    </el-dialog>
     <!-- 分页组件ui -->
     <div style="width: 100%;height: 100%" class="pagination">
       <el-pagination background @current-change="handleCurrentChange" @size-change="handleSizeChange"
@@ -89,9 +98,21 @@
           :rules = {required:true}
       >
         <el-form-item label="是否通过">
-          <el-input v-model="temp.isPassed" placeholder="请输入" />
+<!--          <el-input v-model="temp.isPassed" placeholder="请输入" />-->
+          <el-switch
+              on-value="1"
+              off-value="0"
+              v-model="temp.isPassed"
+              @change="switchChange()" >
+          </el-switch>
         </el-form-item>
-
+        <el-form-item label="审核意见">
+          <el-input
+              type="textarea"
+              :rows="2"
+              v-model="temp.auditComment">
+          </el-input>
+        </el-form-item>
       </el-form>
       <el-button type="danger" @click="dialogVisible = false">
         取消
@@ -109,6 +130,7 @@ import { setStorage, getStorage} from "@/utils/localStorage.js";
 import {
   deepClone
 } from "@/utils/index.js";
+import {checkPrescription} from "@/api/addPrescription";
 const _temp = {
   id: '',
   pharmacistId:"",
@@ -119,6 +141,12 @@ const _temp = {
 export default {
   data() {
     return {
+      isPassed:0,
+      drugList: [],
+      countList:[],
+      prescriptionId:0,
+      prescriptionList:[],
+      dialogTableVisible:false,
       listLoading: true, //查询时加载遮罩
       inputData: "",
       auditCommentList: [],
@@ -134,6 +162,34 @@ export default {
   },
 
   methods: {
+    switchChange(scope){
+      // updateAuditResult({
+      //   id:scope.row.id,
+      //   isPassed:this.isPassed,
+      // }).then((res)=>{
+      //
+      // })
+    },
+    chufang(scope){
+      this.dialogTableVisible='true';
+      console.log("开始查看处方");
+      console.log(scope.row);
+      checkPrescription({
+        "id":scope.row.prescriptionId
+      }).then((res)=>{
+        if(res!=-1){
+          this.drugList = res.data.drugList;
+          this.countList = res.data.countList;
+          for(let i = 0; i < this.drugList.length; i++) {
+            this.drugList[i].count = this.countList[i];
+            this.drugList[i].total = this.countList[i] *  this.drugList[i].price;
+          }
+          console.log("当前处方为:");
+          console.log(this.drugList);
+          console.log(this.countList);
+        }
+      })
+    },
     init() {
       this.listLoading = true;
       getAllAuditResult({}).then((res) => {
@@ -166,6 +222,7 @@ export default {
       })
     },
     edit(scope) {
+      console.log("开始编辑");
       console.log(scope.row);
       this.resetTemp()
       this.dialogVisible = true
@@ -178,12 +235,21 @@ export default {
     },
 
     submit() {
-      if (this.listLoading) {
-        return
-      }
+      console.log('点击提交');
       let data = this.temp;
+      console.log({
+        id:data.id,
+        isPassed:data.isPassed?1:0,
+        auditComment: data.auditComment
+      });
       if (this.dialogType == 'modify') {
-        updateAuditResult(data).then((res) => {
+        console.log("执行更新");
+        updateAuditResult({
+          id:data.id,
+          isPassed:data.isPassed?1:0,
+          auditComment: data.auditComment
+        }).then((res) => {
+          console.log("更新成功");
           if (res != -1) {
             this.$message({
               message: '提交成功',

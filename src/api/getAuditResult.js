@@ -24,7 +24,7 @@ export function deleteAuditResult(data){
 }
 export function updateAuditResult(data){
     return request({
-        url: '/audit-result/'+data.id,//请求接口
+        url: '/audit-result/',//请求接口
         method: 'put',//请求方式
         data
     })

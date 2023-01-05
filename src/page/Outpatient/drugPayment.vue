@@ -29,6 +29,7 @@
         <el-table-column property="total" label="总共" width="150"></el-table-column>
       </el-table>
       <el-button @click="payChufang()">缴费</el-button>
+      <el-button @click="rebund()">退费</el-button>
     </div>
   </div>
 
@@ -50,6 +51,16 @@ export default {
 
   },
   methods:{
+    rebund(){
+      for(let i = 0; i < this.drugList.length; i++) {
+        this.total  += this.drugList[i].total;
+      }
+      const h = this.$createElement;
+      this.$notify({
+        title: '退费成功',
+        message: h('i', { style: 'color: teal'}, '你已成功退款'+this.total+"元")
+      });
+    },
     search(){
       console.log("开始搜索");
       checkPrescription({
