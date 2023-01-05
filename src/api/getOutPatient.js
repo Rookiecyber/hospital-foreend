@@ -23,7 +23,7 @@ export function updatePatient(data){
 }
 export function getPatientByID(data){
     return request({
-        url: '/patient/id/' + data,//请求接口
+        url: '/patient/id/' + data,//请求接口,有用到,别动
         method: 'get',//请求方式
         data
     })
