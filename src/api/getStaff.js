@@ -23,7 +23,7 @@ export function updateStaff(data){
 }
 export function getStaffByID(data){
     return request({
-        url: '/staff/id/' + data.id,//请求接口
+        url: '/staff/id/' + data,//请求接口
         method: 'get',//请求方式
         data
     })

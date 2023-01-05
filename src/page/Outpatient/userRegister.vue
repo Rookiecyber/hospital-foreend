@@ -8,8 +8,8 @@
 <!--    </el-button>-->
     <el-form  style="margin-top:20px"
         ref="form" :model="registerRecord" label-width="80px">
-      <el-form-item label="病人姓名" style="width: 620px">
-        <el-input v-model="registerRecord.name"></el-input>
+      <el-form-item label="病人id" style="width: 620px">
+        <el-input v-model="registerRecord.id"></el-input>
       </el-form-item>
       <el-form-item label="科室">
         <el-select v-model="registerRecord.dep" placeholder="请选择" @change="keshi()">
@@ -86,7 +86,7 @@ export default {
     return {
 
       registerRecord: {
-        name: '',
+        id: '',
         dep: '',
         doctor: '',
         createTime:''
@@ -163,7 +163,8 @@ export default {
         departmentId: this.registerRecord.dep,
       }).then((res)=>{
         if(res!=-1){
-          console.log("挂号成功");
+          alert("挂号成功")
+          location.reload()
         }
       })
     },
