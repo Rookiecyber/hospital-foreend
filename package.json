@@ -12,6 +12,7 @@
     "echarts": "^5.3.3",
     "element-ui": "^2.15.9",
     "moment": "^2.29.3",
+    "speak-tts": "^2.0.8",
     "vue": "^2.6.10",
     "vue-router": "^3.1.3"
   },

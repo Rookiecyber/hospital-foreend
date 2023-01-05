@@ -31,7 +31,6 @@
         </template>
       </el-table-column>
 
-
       <el-table-column
           label="名字"
           align="center"
@@ -48,7 +47,6 @@
           <span>{{ scope.row.doctorName }}</span>
         </template>
       </el-table-column>
-
     </el-table>
     <!-- 分页组件ui -->
     <div style="width: 100%;height: 100%" class="pagination">
@@ -123,7 +121,6 @@ export default {
             getStaffByID(doctorId).then((res) => {
               item.doctorName = res.data.name;
             })
-
           })
           this.registerRecordList = res.data;
           this.total = this.registerRecordList.length;
